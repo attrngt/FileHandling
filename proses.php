@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Gagal mengunggah file.");
     }
 
-    $tmpFile = $_FILES['file']['tmp_name'];
+    $tmpFile = $_FILES['file']['tmp_name']; // ddeklarasi variabel
     $originalName = $_FILES['file']['name'];
     $lines = file($tmpFile);
     $result_lines = [];
@@ -19,31 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  foreach ($lines as $line) {
     if (stripos($line, $keyword) !== false) {
         $foundkeyword = true;
-        // memilih redact maka keyword akan disensor dengan ***
-        if ($operation === 'redact') {
-            $line = str_ireplace($keyword, "<span style='background-color: yellow;'>$keyword</span>", $line);
+        if ($operation === 'redact') { // memilih redact maka keyword akan disensor dengan ***
             $edited_line = str_ireplace($keyword, '***', $line);
             $result_lines[] = $edited_line;
         } else {
-            // jika hanya find, tidak ada perubahan
-            $result_lines[] = $line;
+            $result_lines[] = $line; // jika hanya find, tidak ada perubahan
         }
-        // tampilkan
-        echo $line;
+        echo $line; // tampilkan
     } else {
-        // jika tidak ada keyword dan operasi redact
-        $result_lines[] = $line;
+        $result_lines[] = $line; // jika tidak ada keyword dan operasi redact
     }
 }
     if (!$foundkeyword) {
-    echo "Keyword '<strong>", $keyword, "</strong>' not found!</p>";
+    echo "Keyword '<strong>", $keyword, "</strong>' not found!</p>"; // keyword tidak ditemukan di file
     }
 
 
     echo "</pre>";
 
-    // mengubah nama file hasil
-    $pathinfo = pathinfo($originalName);
+
+    $pathinfo = pathinfo($originalName); // mengubah nama file hasil
     $outputName = ($output_type === 'O')
         ? $originalName
         : $pathinfo['filename'] . "-new." . ($pathinfo['extension'] ?? 'txt');
